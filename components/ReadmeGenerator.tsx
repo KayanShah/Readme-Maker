@@ -251,24 +251,21 @@ function BuildSection({
 
 function AchievementsSection({
   form,
-  update,
+  setAchievements,
 }: {
   form: FormData;
-  update: <K extends keyof FormData>(k: K, v: FormData[K]) => void;
+  setAchievements: (fn: (prev: Achievement[]) => Achievement[]) => void;
 }) {
   function addRow() {
-    update('achievements', [...form.achievements, { id: uid(), emoji: '🏆', title: '', scope: '' }]);
+    setAchievements(prev => [...prev, { id: uid(), emoji: '🏆', title: '', scope: '' }]);
   }
 
   function removeRow(id: string) {
-    update('achievements', form.achievements.filter(a => a.id !== id));
+    setAchievements(prev => prev.filter(a => a.id !== id));
   }
 
   function updateRow(id: string, field: keyof Achievement, value: string) {
-    update(
-      'achievements',
-      form.achievements.map(a => (a.id === id ? { ...a, [field]: value } : a))
-    );
+    setAchievements(prev => prev.map(a => (a.id === id ? { ...a, [field]: value } : a)));
   }
 
   return (
@@ -331,37 +328,31 @@ function BadgeChip({
 
 function TechStackSection({
   form,
-  update,
+  setBadgeCategories,
 }: {
   form: FormData;
-  update: <K extends keyof FormData>(k: K, v: FormData[K]) => void;
+  setBadgeCategories: (fn: (prev: BadgeCategory[]) => BadgeCategory[]) => void;
 }) {
   const [newBadge, setNewBadge] = useState<Record<string, { label: string; color: string; logo: string; logoColor: string }>>({});
   const [expandedCat, setExpandedCat] = useState<string | null>(form.badgeCategories[0]?.id ?? null);
 
   function addCategory() {
     const id = uid();
-    update('badgeCategories', [...form.badgeCategories, { id, name: 'New Category', badges: [] }]);
+    setBadgeCategories(prev => [...prev, { id, name: 'New Category', badges: [] }]);
     setExpandedCat(id);
   }
 
   function removeCategory(id: string) {
-    update('badgeCategories', form.badgeCategories.filter(c => c.id !== id));
+    setBadgeCategories(prev => prev.filter(c => c.id !== id));
   }
 
   function updateCategoryName(id: string, name: string) {
-    update(
-      'badgeCategories',
-      form.badgeCategories.map(c => (c.id === id ? { ...c, name } : c))
-    );
+    setBadgeCategories(prev => prev.map(c => (c.id === id ? { ...c, name } : c)));
   }
 
   function removeBadge(catId: string, badgeId: string) {
-    update(
-      'badgeCategories',
-      form.badgeCategories.map(c =>
-        c.id === catId ? { ...c, badges: c.badges.filter(b => b.id !== badgeId) } : c
-      )
+    setBadgeCategories(prev =>
+      prev.map(c => (c.id === catId ? { ...c, badges: c.badges.filter(b => b.id !== badgeId) } : c))
     );
   }
 
@@ -375,11 +366,8 @@ function TechStackSection({
       logo: nb.logo.trim(),
       logoColor: nb.logoColor.trim() || 'white',
     };
-    update(
-      'badgeCategories',
-      form.badgeCategories.map(c =>
-        c.id === catId ? { ...c, badges: [...c.badges, badge] } : c
-      )
+    setBadgeCategories(prev =>
+      prev.map(c => (c.id === catId ? { ...c, badges: [...c.badges, badge] } : c))
     );
     setNewBadge(prev => ({ ...prev, [catId]: { label: '', color: '#555555', logo: '', logoColor: 'white' } }));
   }
@@ -548,23 +536,22 @@ function ProjectsSection({
 function GoalsSection({
   form,
   update,
+  setGoals,
 }: {
   form: FormData;
   update: <K extends keyof FormData>(k: K, v: FormData[K]) => void;
+  setGoals: (fn: (prev: Goal[]) => Goal[]) => void;
 }) {
   function addGoal() {
-    update('goals', [...form.goals, { id: uid(), text: '', completed: false, note: '' }]);
+    setGoals(prev => [...prev, { id: uid(), text: '', completed: false, note: '' }]);
   }
 
   function removeGoal(id: string) {
-    update('goals', form.goals.filter(g => g.id !== id));
+    setGoals(prev => prev.filter(g => g.id !== id));
   }
 
   function updateGoal(id: string, field: keyof Goal, value: string | boolean) {
-    update(
-      'goals',
-      form.goals.map(g => (g.id === id ? { ...g, [field]: value } : g))
-    );
+    setGoals(prev => prev.map(g => (g.id === id ? { ...g, [field]: value } : g)));
   }
 
   return (
@@ -732,6 +719,17 @@ export default function ReadmeGenerator() {
     setForm(prev => ({ ...prev, [key]: value }));
   }
 
+  // Functional updaters for lists — avoid stale-closure bugs
+  function setGoals(fn: (prev: Goal[]) => Goal[]) {
+    setForm(prev => ({ ...prev, goals: fn(prev.goals) }));
+  }
+  function setAchievements(fn: (prev: Achievement[]) => Achievement[]) {
+    setForm(prev => ({ ...prev, achievements: fn(prev.achievements) }));
+  }
+  function setBadgeCategories(fn: (prev: BadgeCategory[]) => BadgeCategory[]) {
+    setForm(prev => ({ ...prev, badgeCategories: fn(prev.badgeCategories) }));
+  }
+
   async function handleCopy() {
     await navigator.clipboard.writeText(readme);
     setCopied(true);
@@ -753,8 +751,6 @@ export default function ReadmeGenerator() {
       setForm(defaultFormData);
     }
   }
-
-  const sectionProps = { form, update } as const;
 
   return (
     <div className="flex flex-col h-screen bg-slate-50">
@@ -827,15 +823,15 @@ export default function ReadmeGenerator() {
 
           {/* Form content */}
           <div className="flex-1 overflow-y-auto p-5">
-            {section === 'profile' && <ProfileSection {...sectionProps} />}
-            {section === 'build' && <BuildSection {...sectionProps} />}
-            {section === 'achievements' && <AchievementsSection {...sectionProps} />}
-            {section === 'techstack' && <TechStackSection {...sectionProps} />}
-            {section === 'projects' && <ProjectsSection {...sectionProps} />}
-            {section === 'goals' && <GoalsSection {...sectionProps} />}
-            {section === 'shoutout' && <ShoutoutSection {...sectionProps} />}
-            {section === 'text' && <TextSection {...sectionProps} />}
-            {section === 'options' && <OptionsSection {...sectionProps} />}
+            {section === 'profile' && <ProfileSection form={form} update={update} />}
+            {section === 'build' && <BuildSection form={form} update={update} />}
+            {section === 'achievements' && <AchievementsSection form={form} setAchievements={setAchievements} />}
+            {section === 'techstack' && <TechStackSection form={form} setBadgeCategories={setBadgeCategories} />}
+            {section === 'projects' && <ProjectsSection form={form} update={update} />}
+            {section === 'goals' && <GoalsSection form={form} update={update} setGoals={setGoals} />}
+            {section === 'shoutout' && <ShoutoutSection form={form} update={update} />}
+            {section === 'text' && <TextSection form={form} update={update} />}
+            {section === 'options' && <OptionsSection form={form} update={update} />}
           </div>
         </div>
 
