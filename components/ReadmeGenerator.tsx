@@ -869,8 +869,8 @@ export default function ReadmeGenerator() {
           {/* Preview content */}
           <div className="flex-1 overflow-y-auto">
             {previewMode === 'raw' ? (
-              <div className="h-full bg-[#0d1117]">
-                <pre className="p-5 font-mono text-xs text-[#c9d1d9] whitespace-pre-wrap leading-relaxed min-h-full">
+              <div className="min-h-full bg-[#0d1117]">
+                <pre className="p-5 font-mono text-xs text-[#c9d1d9] whitespace-pre-wrap leading-relaxed">
                   {readme}
                 </pre>
               </div>
