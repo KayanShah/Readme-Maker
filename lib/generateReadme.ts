@@ -1,4 +1,5 @@
 import type { FormData, Badge } from './types';
+import { SITE_URL, KAYAN_GITHUB_URL } from './siteConfig';
 
 function encodeBadgeLabel(label: string): string {
   return label
@@ -241,6 +242,12 @@ export function generateReadme(data: FormData): string {
     parts.push('');
     parts.push('</details>');
   }
+
+  // Mandatory attribution
+  parts.push('');
+  parts.push('---');
+  parts.push('');
+  parts.push(`*Readme made using [Kayan Shah](${KAYAN_GITHUB_URL})'s [README Generator Tool](${SITE_URL})*`);
 
   return parts.join('\n');
 }
