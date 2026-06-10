@@ -758,7 +758,7 @@ export default function ReadmeGenerator() {
       <header className="flex items-center justify-between px-5 py-3 bg-[#0F3460] shadow-md flex-shrink-0">
         <div className="flex items-center gap-3">
           <div className="w-7 h-7 bg-white/20 rounded-md flex items-center justify-center text-white text-sm font-bold">R</div>
-          <h1 className="text-white font-bold text-base">GitHub README Generator</h1>
+          <h1 className="text-white font-bold text-base">GitHub README Maker</h1>
         </div>
         <div className="flex items-center gap-2">
           <button

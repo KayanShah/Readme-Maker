@@ -247,7 +247,7 @@ export function generateReadme(data: FormData): string {
   parts.push('');
   parts.push('---');
   parts.push('');
-  parts.push(`*Readme made using [Kayan Shah](${KAYAN_GITHUB_URL})'s [README Generator Tool](${SITE_URL})*`);
+  parts.push(`*Readme made using [Kayan Shah](${KAYAN_GITHUB_URL})'s [README Maker](${SITE_URL})*`);
 
   return parts.join('\n');
 }

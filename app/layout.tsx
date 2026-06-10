@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GitHub README Generator",
+  title: "GitHub README Maker",
   description: "Generate a stunning GitHub profile README in seconds.",
 };
 
