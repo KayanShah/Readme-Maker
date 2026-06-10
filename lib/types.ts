@@ -45,7 +45,6 @@ export interface FormData {
   goalsYear: string;
   shoutoutUsername: string;
   shoutoutMessage: string;
-  showFollowerGoal: boolean;
   showTrophies: boolean;
   showChart: boolean;
   showTools: boolean;

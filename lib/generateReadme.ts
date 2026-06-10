@@ -38,7 +38,6 @@ export function generateReadme(data: FormData): string {
     goalsYear,
     shoutoutUsername,
     shoutoutMessage,
-    showFollowerGoal,
     showTrophies,
     showChart,
     showTools,
@@ -98,14 +97,6 @@ export function generateReadme(data: FormData): string {
   badgeLines.push(`<a href="mailto:${email}"><img src="https://img.shields.io/badge/Email-0F3460?style=flat-square&logo=icloud&logoColor=white" /></a>`);
   if (showOpenToCollab) {
     badgeLines.push(`<a href="mailto:${email}"><img src="https://img.shields.io/badge/Open_to_Collaborations-0F3460?style=flat-square&logo=handshake&logoColor=white" /></a>`);
-  }
-  badgeLines.push('');
-  badgeLines.push('');
-  badgeLines.push(`<img src="https://gh-follower-badge.vercel.app/api/thank-you?v=7" alt="Thank you badge" />`);
-  if (showFollowerGoal) {
-    badgeLines.push('');
-    badgeLines.push('');
-    badgeLines.push(`<img src="https://gh-follower-badge.vercel.app/api/goal?v=6" alt="Follower goal badge" />`);
   }
   parts.push(`<p>\n${badgeLines.join('\n')}\n\n</p>`);
   parts.push('');

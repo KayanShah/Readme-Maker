@@ -649,7 +649,6 @@ function OptionsSection({
     <div>
       <SectionTitle>Display Options</SectionTitle>
       <div className="space-y-3">
-        <Toggle checked={form.showFollowerGoal} onChange={v => update('showFollowerGoal', v)} label="Show follower goal badge" />
         <Toggle checked={form.showOpenToCollab} onChange={v => update('showOpenToCollab', v)} label="Show Open to Collaborations badge" />
         <Toggle checked={form.showTrophies} onChange={v => update('showTrophies', v)} label="Show GitHub trophies" />
         <Toggle checked={form.showChart} onChange={v => update('showChart', v)} label="Show GitHub contribution chart" />

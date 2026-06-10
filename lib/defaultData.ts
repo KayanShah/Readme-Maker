@@ -120,7 +120,6 @@ export const defaultFormData: FormData = {
   goalsYear: '2026',
   shoutoutUsername: 'PanshulVempalli',
   shoutoutMessage: "go check out his profile! I do loads of projects with him!",
-  showFollowerGoal: true,
   showTrophies: true,
   showChart: true,
   showTools: true,
