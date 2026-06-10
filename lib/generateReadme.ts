@@ -20,8 +20,6 @@ function encodeTypingLine(line: string): string {
 
 export function generateReadme(data: FormData): string {
   const {
-    name,
-    location,
     typingLines,
     tagline,
     bio,
@@ -36,6 +34,12 @@ export function generateReadme(data: FormData): string {
     featuredRepos,
     goals,
     goalsYear,
+    statsHeading,
+    whatIBuildHeading,
+    achievementsHeading,
+    techStackHeading,
+    footerCallout,
+    footerThanks,
     shoutoutUsername,
     shoutoutMessage,
     showTrophies,
@@ -69,7 +73,9 @@ export function generateReadme(data: FormData): string {
   for (let i = 0; i < validRepos.length; i += 2) {
     const pair = validRepos.slice(i, i + 2);
     const cards = pair
-      .map(repo => `  <a href="https://github.com/${githubUsername}/${repo}">\n    <img src="https://kayan-github-profile-projects-featu.vercel.app/api/pin/?username=${githubUsername}&repo=${repo}&theme=nord&bg_color=0F3460&hide_border=true" />\n  </a>`)
+      .map(repo =>
+        `  <a href="https://github.com/${githubUsername}/${repo}">\n    <img src="https://kayan-github-profile-projects-featu.vercel.app/api/pin/?username=${githubUsername}&repo=${repo}&theme=nord&bg_color=0F3460&hide_border=true" />\n  </a>`
+      )
       .join('\n  &nbsp;\n  \n');
     featuredProjectRows.push(`<p align="center">\n${cards}\n</p>`);
   }
@@ -82,8 +88,6 @@ export function generateReadme(data: FormData): string {
       return `- [${check}] ${g.text}${note}`;
     })
     .join('\n');
-
-  const locationStr = location ? ` based in ${location}` : '';
 
   const parts: string[] = [];
 
@@ -98,7 +102,7 @@ export function generateReadme(data: FormData): string {
   if (showOpenToCollab) {
     badgeLines.push(`<a href="mailto:${email}"><img src="https://img.shields.io/badge/Open_to_Collaborations-0F3460?style=flat-square&logo=handshake&logoColor=white" /></a>`);
   }
-  parts.push(`<p>\n${badgeLines.join('\n')}\n\n</p>`);
+  parts.push(`<p>\n${badgeLines.join('\n')}\n</p>`);
   parts.push('');
   parts.push('---');
   parts.push('');
@@ -114,7 +118,7 @@ export function generateReadme(data: FormData): string {
   parts.push('');
 
   // GitHub Stats
-  parts.push('## GitHub Stats');
+  parts.push(`## ${statsHeading}`);
   parts.push('');
   parts.push('<p align="center">');
   parts.push(`  <img src="https://github-readme-streak-stats-kayan.vercel.app?user=${githubUsername}&theme=nord&hide_border=true" height="99.4px" alt="Refresh to load" />`);
@@ -130,7 +134,7 @@ export function generateReadme(data: FormData): string {
   parts.push('');
 
   // What I Build
-  parts.push('## What I Build');
+  parts.push(`## ${whatIBuildHeading}`);
   parts.push('');
   parts.push('<table width="100%">');
   parts.push('  <tr>');
@@ -146,7 +150,7 @@ export function generateReadme(data: FormData): string {
 
   // Achievements
   if (achievements.length > 0) {
-    parts.push('## Honours & Achievements');
+    parts.push(`## ${achievementsHeading}`);
     parts.push('| | Achievement | Scope |');
     parts.push('|:---:|:---|:---:|');
     parts.push(achievementRows);
@@ -158,7 +162,7 @@ export function generateReadme(data: FormData): string {
 
   // Tech Stack
   if (techStackSection) {
-    parts.push('## Tech Stack');
+    parts.push(`## ${techStackHeading}`);
     parts.push(' ');
     parts.push(techStackSection);
     parts.push('');
@@ -191,11 +195,14 @@ export function generateReadme(data: FormData): string {
   }
 
   // Footer
-  parts.push('<a>');
-  parts.push('⭐ If something here was useful or you want to connect, a follow or star goes a long way!');
-  parts.push('');
-  parts.push(`*Thanks for visiting - check out my public repos below. Much more to come!*`);
-  parts.push('');
+  if (footerCallout) {
+    parts.push(footerCallout);
+    parts.push('');
+  }
+  if (footerThanks) {
+    parts.push(footerThanks);
+    parts.push('');
+  }
   parts.push('');
 
   // Activity Graph
@@ -234,10 +241,6 @@ export function generateReadme(data: FormData): string {
     parts.push('');
     parts.push('</details>');
   }
-
-  // Suppress unused variable warning
-  void name;
-  void locationStr;
 
   return parts.join('\n');
 }

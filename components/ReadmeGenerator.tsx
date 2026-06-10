@@ -20,6 +20,7 @@ type Section =
   | 'projects'
   | 'goals'
   | 'shoutout'
+  | 'text'
   | 'options';
 
 const SECTIONS: { id: Section; label: string }[] = [
@@ -30,6 +31,7 @@ const SECTIONS: { id: Section; label: string }[] = [
   { id: 'projects', label: 'Projects' },
   { id: 'goals', label: 'Goals' },
   { id: 'shoutout', label: 'Shoutout' },
+  { id: 'text', label: 'Headings & Footer' },
   { id: 'options', label: 'Options' },
 ];
 
@@ -638,6 +640,64 @@ function ShoutoutSection({
   );
 }
 
+function TextSection({
+  form,
+  update,
+}: {
+  form: FormData;
+  update: <K extends keyof FormData>(k: K, v: FormData[K]) => void;
+}) {
+  return (
+    <div>
+      <SectionTitle>Headings & Footer Text</SectionTitle>
+
+      <div className="mb-5">
+        <p className="text-xs font-bold text-[#0F3460] uppercase tracking-wide mb-3">Section Headings</p>
+        <div className="space-y-3">
+          <FieldGroup>
+            <Label>GitHub Stats heading</Label>
+            <Input value={form.statsHeading} onChange={v => update('statsHeading', v)} placeholder="GitHub Stats" />
+          </FieldGroup>
+          <FieldGroup>
+            <Label>What I Build heading</Label>
+            <Input value={form.whatIBuildHeading} onChange={v => update('whatIBuildHeading', v)} placeholder="What I Build" />
+          </FieldGroup>
+          <FieldGroup>
+            <Label>Achievements heading</Label>
+            <Input value={form.achievementsHeading} onChange={v => update('achievementsHeading', v)} placeholder="Honours & Achievements" />
+          </FieldGroup>
+          <FieldGroup>
+            <Label>Tech Stack heading</Label>
+            <Input value={form.techStackHeading} onChange={v => update('techStackHeading', v)} placeholder="Tech Stack" />
+          </FieldGroup>
+        </div>
+      </div>
+
+      <div>
+        <p className="text-xs font-bold text-[#0F3460] uppercase tracking-wide mb-3">Footer Text</p>
+        <FieldGroup>
+          <Label>Call-to-action line</Label>
+          <Input
+            value={form.footerCallout}
+            onChange={v => update('footerCallout', v)}
+            placeholder="⭐ If something here was useful..."
+          />
+          <p className="text-xs text-slate-400 mt-1">Appears after the shoutout. Leave blank to omit.</p>
+        </FieldGroup>
+        <FieldGroup>
+          <Label>Thanks line (markdown supported)</Label>
+          <Input
+            value={form.footerThanks}
+            onChange={v => update('footerThanks', v)}
+            placeholder="*Thanks for visiting...*"
+          />
+          <p className="text-xs text-slate-400 mt-1">Leave blank to omit.</p>
+        </FieldGroup>
+      </div>
+    </div>
+  );
+}
+
 function OptionsSection({
   form,
   update,
@@ -774,6 +834,7 @@ export default function ReadmeGenerator() {
             {section === 'projects' && <ProjectsSection {...sectionProps} />}
             {section === 'goals' && <GoalsSection {...sectionProps} />}
             {section === 'shoutout' && <ShoutoutSection {...sectionProps} />}
+            {section === 'text' && <TextSection {...sectionProps} />}
             {section === 'options' && <OptionsSection {...sectionProps} />}
           </div>
         </div>

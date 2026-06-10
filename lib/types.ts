@@ -43,6 +43,12 @@ export interface FormData {
   featuredRepos: string[];
   goals: Goal[];
   goalsYear: string;
+  statsHeading: string;
+  whatIBuildHeading: string;
+  achievementsHeading: string;
+  techStackHeading: string;
+  footerCallout: string;
+  footerThanks: string;
   shoutoutUsername: string;
   shoutoutMessage: string;
   showTrophies: boolean;
