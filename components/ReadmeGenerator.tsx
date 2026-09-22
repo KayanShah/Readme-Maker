@@ -1,3 +1,4 @@
+<a href="mailto:hi@kayanshah.com"></a>
 'use client';
 
 import { useState, useMemo } from 'react';
